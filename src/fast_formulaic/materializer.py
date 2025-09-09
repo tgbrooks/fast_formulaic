@@ -1,3 +1,8 @@
+# Based off fromulaic/materializers/base.py and formulaic.materializers.narwhals.py
+# under the MIT license
+# Original version copyright 2019 Matthew Wardrop and contributors
+#
+# Adapted 2025  Thomas G Brooks
 from __future__ import annotations
 
 import functools
