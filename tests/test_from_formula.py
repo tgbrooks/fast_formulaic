@@ -29,3 +29,4 @@ def test_from_formula():
         )
         desired = formulaic.model_matrix(spec, df)
         assert np.allclose(res.toarray(), desired.toarray())
+        assert res.model_spec.structure == desired.model_spec.structure

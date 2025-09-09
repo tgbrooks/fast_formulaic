@@ -204,7 +204,7 @@ class FastFormulaicMaterializer(NarwhalsMaterializer):
                     EncodedTermStructure(
                         term,
                         list(st.copy(without_values=True) for st in scoped_terms),
-                        [name for name, col in scoped_cols],
+                        [name for names, cols in scoped_cols for name in names],
                     )
                     for term, scoped_terms, scoped_cols in cols
                 ],
