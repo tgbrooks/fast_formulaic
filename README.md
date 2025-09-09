@@ -5,7 +5,7 @@ A faster materializer for formulaic for the case where you have large numbers of
 ## Installation
 
 ```
-pip install git+git://github.com/tgbrooks/fast_formulaic.git
+pip install git+https://github.com/tgbrooks/fast_formulaic.git
 ```
 
 ## Tutorial
