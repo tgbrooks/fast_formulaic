@@ -2,6 +2,7 @@ import scipy.sparse as spsparse
 import numpy as np
 import polars as pl
 import fast_formulaic
+import formulaic
 
 
 def test_from_formula():
@@ -15,35 +16,16 @@ def test_from_formula():
     )
 
     configs = [
-        (
-            "~ x : cat1",
-            np.array(
-                [
-                    [1, 1, 1, 1, 1, 1],
-                    [1, 0, 0, 0, 0, 6],
-                    [0, 2, 0, 0, 0, 0],
-                    [0, 0, 3, 4, 5, 0],
-                ]
-            ),
-        ),
-        (
-            "~ 0 + cat1 : cat2",
-            np.array(
-                [
-                    [1, 0, 0, 0, 0, 0],  # a,X
-                    [0, 1, 0, 0, 0, 0],  # b,X
-                    [0, 0, 0, 0, 0, 0],  # c,X
-                    [0, 0, 0, 0, 0, 0],  # a,Y
-                    [0, 0, 0, 0, 0, 0],  # b,Y
-                    [0, 0, 1, 1, 0, 0],  # c,Y
-                    [0, 0, 0, 0, 0, 1],  # a,Z
-                    [0, 0, 0, 0, 0, 0],  # b,Z
-                    [0, 0, 0, 0, 1, 0],  # c,Z
-                ]
-            ),
-        ),
+        "~ x : cat1",
+        "~ 0 + cat1 : cat2",
     ]
 
-    for formula, desired in configs:
+    for formula in configs:
         res = fast_formulaic.from_formula(formula, df)
-        assert np.allclose(res.toarray(), desired.T)
+        spec = formulaic.ModelSpec(
+            formula,
+            materializer=formulaic.materializers.NarwhalsMaterializer,
+            output="sparse",
+        )
+        desired = formulaic.model_matrix(spec, df)
+        assert np.allclose(res.toarray(), desired.toarray())
