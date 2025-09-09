@@ -11,8 +11,8 @@ from scipy.sparse import csc_matrix
 @cython.boundscheck(False)
 @cython.wraparound(False)
 def csc_column_product(A,B):
-    # Method that works for canonical CSR/CSC matrices
-    # ASsumes A and B have the same shape
+    # Method that works for canonical CSC matrices
+    # Assumes A and B have compatible shape (same number of rows)
     # pairwise products of all columns
 
     cdef:

@@ -125,7 +125,6 @@ class FastFormulaicMaterializer(NarwhalsMaterializer):
                 assert (
                     A.indices.dtype == numpy.int32 and B.indices.dtype == numpy.int32
                 ), "Matrices are larger than is currently supported: at most 32-bit indices usable."
-                print("using csc")  # TODO: remove print statement
                 return csc.csc_column_product(A, B)
 
         out = scale * functools.reduce(_column_product, factor_mats)
@@ -136,7 +135,6 @@ class FastFormulaicMaterializer(NarwhalsMaterializer):
     def _build_model_matrix(
         self, spec: ModelSpec, drop_rows: Sequence[int]
     ) -> ModelMatrix:
-        print("start", spec.output)
         # Modified version of base._build_model_matrix
         # so that we don't have to separate out all columns
 
@@ -148,7 +146,6 @@ class FastFormulaicMaterializer(NarwhalsMaterializer):
 
         # Step 1: Determine strategy to maintain structural full-rankness of output matrix
         # (reusing pre-generated structure if it is available)
-        print(f"STEP1: {spec.output}")
         if spec.structure:
             scoped_terms_for_terms: Generator[
                 tuple[Term, Iterable[ScopedTerm]], None, None
@@ -163,7 +160,6 @@ class FastFormulaicMaterializer(NarwhalsMaterializer):
             )
 
         # Step 2: Generate the columns which will be collated into the full matrix
-        print(f"STEP2: {spec.output}")
         cols = []
         for term, scoped_terms in scoped_terms_for_terms:
             scoped_cols = []
@@ -195,7 +191,6 @@ class FastFormulaicMaterializer(NarwhalsMaterializer):
             cols.append((term, scoped_terms, scoped_cols))
 
         # Step 3: Populate remaining model spec fields
-        print(f"STEP3: {spec.output}")
         if spec.structure:
             cols = list(self._enforce_structure(cols, spec, drop_rows))
         else:
