@@ -1,4 +1,3 @@
-import scipy.sparse as spsparse
 import numpy as np
 import polars as pl
 import fast_formulaic
@@ -10,6 +9,7 @@ def test_from_formula():
         {
             "cat1": ["a", "b", "c", "c", "c", "a"],
             "cat2": ["X", "X", "Y", "Y", "Z", "Z"],
+            "cat3": ["A", "A", "A", "A", "A", "A"],
             "y": [0, 2, 0, 3, 4, 1],
             "x": [1, 2, 3, 4, 5, 6],
         }
@@ -18,6 +18,11 @@ def test_from_formula():
     configs = [
         "~ x : cat1",
         "~ 0 + cat1 : cat2",
+        "~ x",
+        "~ x + y",
+        "~ cat1",
+        "~ 1 + x",
+        "~ cat3",
     ]
 
     for formula in configs:

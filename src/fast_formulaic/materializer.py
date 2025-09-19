@@ -113,6 +113,8 @@ class FastFormulaicMaterializer(NarwhalsMaterializer):
 
         factor_mats = []
         for factor in factors:
+            if len(factor) == 0:
+                continue
             mat = spsparse.hstack(list(factor.values()), format="csc")
             mat.sort_indices()  # puts matrix into canonical form, as assumed by our Cython function
             factor_mats.append(mat)
@@ -132,7 +134,12 @@ class FastFormulaicMaterializer(NarwhalsMaterializer):
                 ), "Matrices are larger than is currently supported: at most 32-bit indices usable."
                 return csc.csc_column_product(A, B)
 
-        out = scale * functools.reduce(_column_product, factor_mats)
+        if factor_mats:
+            out = scale * functools.reduce(_column_product, factor_mats)
+        else:
+            # TODO: does this need to account for dropped rows ala https://github.com/matthewwardrop/formulaic/blob/46eb1f26c79d3f999c12738cde6b11f875c7c9c8/formulaic/materializers/narwhals.py#L64
+            nrows = self.nrows
+            return names, spsparse.csc_matrix((nrows, 0))
 
         return names, out
 
