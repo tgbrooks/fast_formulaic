@@ -113,8 +113,8 @@ class FastFormulaicMaterializer(NarwhalsMaterializer):
 
         def convert(mat):
             if mat.ndim == 1:
-                return mat.reshape((len(mat), 1))
-            return mat
+                return spsparse.csc_matrix(mat.reshape((len(mat), 1)))
+            return spsparse.csc_matrix(mat)
 
         factor_mats = []
         for factor in factors:
