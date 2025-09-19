@@ -37,7 +37,7 @@ class FastFormulaicMaterializer(NarwhalsMaterializer):
         "narwhals.DataFrame",
         "narwhals.stable.v1.DataFrame",
     )
-    REGISTER_OUTPUTS: Sequence[str] = "sparse"
+    REGISTER_OUTPUTS: Sequence[str] = ("sparse",)
     REGISTER_PRECEDENCE = 200
 
     @override
