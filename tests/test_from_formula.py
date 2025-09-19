@@ -23,6 +23,7 @@ def test_from_formula():
         "~ cat1",
         "~ 1 + x",
         "~ cat3",
+        "~ x*y*cat1*cat2*cat3",
     ]
 
     for formula in configs:
